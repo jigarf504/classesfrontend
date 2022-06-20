@@ -1,30 +1,21 @@
 <template>
-  <div>
-    <div class="inline-grid grid gap-4 grid-cols-3 grid-rows-3">
-      <span class="p-4 bg-lime-500 rounded-lg text-white">01</span>
-      <span class="p-4 bg-lime-500 rounded-lg text-white">02</span>
-      <span class="p-4 bg-lime-500 rounded-lg text-white">03</span>
-      <span class="p-4 bg-lime-500 rounded-lg text-white">04</span>
-      <span class="p-4 bg-lime-500 rounded-lg text-white">05</span>
-      <span class="p-4 bg-lime-500 rounded-lg text-white">06</span>
-    </div>
-    <div class="flex">
-      <div class="flex-1 p-4 m-4 bg-slate-500">
-        01
-      </div>
-      <div class="contents">
-        <div class="flex-1 p-4 m-4 bg-slate-200">
-          02
+        <div class="w-full h-full flex flex-col">
+           <TheTitleBar />
+
+          <div class="h-full px-4 py-4 bg-slate-100">
+
+            <div class="container px-4 rounded-sm py-4 bg-white bg-white shadow-md dark:bg-gray-800">
+              <header class="border-b-2 pb-2 py-0">
+                   <h2>Dashboard</h2>
+              </header>
+
+            </div>
+          </div>
         </div>
-        <div class="flex-1 p-4 m-4 bg-slate-200">
-          03
-        </div>
-      </div>
-      <div class="flex-1 p-4 m-4 bg-slate-500">
-        04
-      </div>
-    </div>
-  </div>
+<!--  <div>-->
+<!--     <div slot="title"> Some header template content. </div>-->
+<!--     Hello world-->
+<!--  </div>-->
 </template>
 
 <script>
