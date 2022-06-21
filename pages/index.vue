@@ -8,7 +8,7 @@
               <header class="border-b-2 pb-2 py-0">
                    <h2>Dashboard</h2>
               </header>
-
+              <span class="material-icons md-36">face</span>
             </div>
           </div>
         </div>

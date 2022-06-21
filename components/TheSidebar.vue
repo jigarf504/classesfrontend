@@ -10,7 +10,7 @@
           $route.name == menu.url ? 'bg-indigo-200' : '',
           $route.name == menu.url ? 'text-indigo-600' : 'text-slate-600',
         ]">
-       <font-awesome-icon :icon="menu.icon" />&nbsp;&nbsp;{{menu.name}}
+       <span class="material-icons md-36">{{menu.icon}}</span>&nbsp;&nbsp;  {{menu.name}}
     </div>
   </div>
 </template>
@@ -24,27 +24,27 @@ export default {
       {
         name: 'Dashboard',
         url: 'index',
-        icon: 'house-chimney'
+        icon: 'home'
       },
       {
         name: 'Branch',
         url: 'branch',
-        icon: 'code-branch'
+        icon: 'domain'
       },
       {
         name: 'Students',
         url: 'students',
-        icon: 'user'
+        icon: 'supervisor_account'
       },
       {
         name: 'Inquiry',
         url: 'inquiry',
-        icon: 'comment-dots'
+        icon: 'assignment'
       },
       {
         name: 'Users',
         url: 'user',
-        icon: 'users'
+        icon: 'people'
       },
       {
         name: 'Reports',
@@ -54,7 +54,7 @@ export default {
       {
         name: 'Settings',
         url: 'setting',
-        icon: 'gear'
+        icon: 'settings'
       }
     ]
   }),
