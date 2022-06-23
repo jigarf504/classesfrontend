@@ -1,17 +1,36 @@
 <template>
   <div class="h-full w-64 border-r pt-4 px-3">
-    <div
-        v-for="menu of menus"
-        :key="menu.url"
-        :class="[
-          'mt-2.5','py-2', 'text-sm', 'font-medium',  'px-2', 'rounded-lg', 'group','cursor-pointer', 'flex', 'items-center',
+    <nav aria-label="Main" class="flex-1 ">
+      <div v-for="menu of menus" :key="menu.url">
+        <a href="#"
+           class="flex items-center p-2 text-gray-500 transition-colors rounded-md dark:text-light hover:bg-primary-100 dark:hover:bg-indigo-600 bg-primary-100 dark:bg-primary"
+           role="button" aria-haspopup="false" aria-expanded="false"
+           :class="[
+         'text-sm', 'font-medium',  'px-2', 'rounded-sm', 'group','cursor-pointer', 'flex', 'items-center',
           'hover:bg-indigo-600',
           'hover:text-indigo-200',
           $route.name == menu.url ? 'bg-indigo-200' : '',
           $route.name == menu.url ? 'text-indigo-600' : 'text-slate-600',
-        ]">
-       <span class="material-icons md-36">{{menu.icon}}</span>&nbsp;&nbsp;  {{menu.name}}
-    </div>
+        ]"
+           @click="toggleCollapseShow(menu.name)"
+        >
+          <span v-if="menu.icon" class="material-icons md-18">{{ menu.icon }}</span>
+          <span class="ml-2 text-sm"> {{ menu.name }} </span>
+          <span v-if="menu.subMenu && menu_pos[menu.name] == 'down'" class="ml-auto material-icons">
+            keyboard_arrow_up
+          </span>
+          <span v-if="menu.subMenu && (menu_pos[menu.name] == '' || menu_pos[menu.name] == 'up')" class="ml-auto material-icons">
+            keyboard_arrow_down
+          </span>
+        </a>
+        <div v-if="menu.subMenu && menu_pos[menu.name] == 'up'" class="mt-2 space-y-2 px-7" role="menu" aria-label="Layouts">
+          <a v-for="submenu of menu.subMenu" :key="submenu.name" href="layouts/two-columns-sidebar.html" role="menuitem"
+             class="block p-2 hover:text-indigo-600 text-sm transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light">
+            {{ submenu.name }}
+          </a>
+        </div>
+      </div>
+    </nav>
   </div>
 </template>
 
@@ -20,7 +39,11 @@ export default {
   name: 'TheSidebar',
   data: () => ({
     collapseShow: 'hidden',
-    menus : [
+    menu_pos: {
+      'Settings': '',
+      'Reports': '',
+    },
+    menus: [
       {
         name: 'Dashboard',
         url: 'index',
@@ -48,20 +71,45 @@ export default {
       },
       {
         name: 'Reports',
-        url: '#',
-        icon: 'book'
+        url: 'report',
+        icon: 'book',
       },
       {
         name: 'Settings',
         url: 'setting',
-        icon: 'settings'
+        icon: 'settings',
+        icon_position: 'down',
+        subMenu: [
+          {
+            name: 'Course',
+            url: 'course',
+            icon: ''
+          },
+          {
+            name: 'Qualification',
+            url: 'qualification',
+            icon: ''
+          },
+          {
+            name: 'Users',
+            url: 'user',
+            icon: ''
+          },
+          {
+            name: 'Role',
+            url: 'role',
+            icon: ''
+          },
+        ]
       }
     ]
   }),
   methods: {
-    toggleCollapseShow (classes) {
-      this.collapseShow = classes
+    toggleCollapseShow(menu_name) {
+      this.menu_pos[menu_name] = (this.menu_pos[menu_name] == 'up' || this.menu_pos[menu_name] == '') ? 'down' : 'up'
     }
+  },
+  created() {
   }
 }
 </script>
