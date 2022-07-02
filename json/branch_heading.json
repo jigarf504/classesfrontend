@@ -1,0 +1,23 @@
+{
+   "headings": [
+        {
+          "label": "Branch code"
+        },
+        {
+          "label": "Branch name"
+        },
+        {
+          "label": "Email"
+        },
+        {
+          "label": "Phone number"
+        },
+        {
+          "label": "Status"
+        },
+        {
+          "label": "Action",
+          "align": "center"
+        }
+      ]
+}

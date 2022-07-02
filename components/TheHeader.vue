@@ -36,7 +36,7 @@
       <button class="ml-auto material-icons stroke-slate-300 text-white">
         settings
       </button>
-      <img src="https://source.unsplash.com/random/500x500/?r" class="h-10 w-10 rounded-full" alt="">
+      <img :src="require('@/assets/images/javascript.png')" class="h-10 w-10 rounded-full" alt="">
     </div>
   </div>
 </template>

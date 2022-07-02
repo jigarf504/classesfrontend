@@ -11,11 +11,7 @@
           </TheTitleBar>
 
           <div class="h-full px-4 py-4 bg-slate-100">
-
             <div class="container px-4 rounded-sm py-4 bg-white bg-white shadow-md dark:bg-gray-800">
-<!--              <header class="border-b-2 pb-2 py-0">-->
-<!--                   <h2>Dashboard</h2>-->
-<!--              </header>-->
             </div>
           </div>
         </div>

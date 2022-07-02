@@ -1,0 +1,61 @@
+{
+  "menus": [
+    {
+      "name": "Dashboard",
+      "url": "/",
+      "icon": "home"
+    },
+    {
+      "name": "Branch",
+      "url": "branch",
+      "icon": "domain"
+    },
+    {
+      "name": "Students",
+      "url": "students",
+      "icon": "supervisor_account"
+    },
+    {
+      "name": "Inquiry",
+      "url": "inquiry",
+      "icon": "assignment"
+    },
+    {
+      "name": "Users",
+      "url": "user",
+      "icon": "people"
+    },
+    {
+      "name": "Reports",
+      "url": "report",
+      "icon": "book"
+    },
+    {
+      "name": "Settings",
+      "url": "#",
+      "icon": "settings",
+      "subMenu": [
+        {
+          "name": "Course",
+          "url": "course",
+          "icon": ""
+        },
+        {
+          "name": "Qualification",
+          "url": "qualification",
+          "icon": ""
+        },
+        {
+          "name": "Users",
+          "url": "user",
+          "icon": ""
+        },
+        {
+          "name": "Role",
+          "url": "role",
+          "icon": ""
+        }
+      ]
+    }
+  ]
+}
