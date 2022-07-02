@@ -7,27 +7,27 @@
     },
     {
       "name": "Branch",
-      "url": "branch",
+      "url": "/branch",
       "icon": "domain"
     },
     {
       "name": "Students",
-      "url": "students",
+      "url": "/students",
       "icon": "supervisor_account"
     },
     {
       "name": "Inquiry",
-      "url": "inquiry",
+      "url": "/inquiry",
       "icon": "assignment"
     },
     {
       "name": "Users",
-      "url": "user",
+      "url": "/user",
       "icon": "people"
     },
     {
       "name": "Reports",
-      "url": "report",
+      "url": "/report",
       "icon": "book"
     },
     {
