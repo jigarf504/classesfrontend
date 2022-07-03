@@ -27,9 +27,9 @@
         </nuxt-link>
         <div v-if="menu.subMenu && menu_pos[menu.name] == 'up'" class="mt-2 space-y-2 px-7" role="menu" aria-label="Layouts">
           <a
-            v-for="submenu of menu.subMenu" 
-            :key="submenu.name" 
-            href="layouts/two-columns-sidebar.html" 
+            v-for="submenu of menu.subMenu"
+            :key="submenu.name"
+            href="layouts/two-columns-sidebar.html"
             role="menuitem"
             class="block p-2 hover:text-indigo-600 text-sm transition-colors duration-200 rounded-md dark:text-gray-400 dark:hover:text-light"
           >
@@ -48,17 +48,15 @@ export default {
   data: () => ({
     collapseShow: 'hidden',
     menu_pos: {
-      'Settings': '',
-      'Reports': '',
+      Settings: '',
+      Reports: ''
     },
-    menus:sidebarMenu.menus
+    menus: sidebarMenu.menus
   }),
   methods: {
-    toggleCollapseShow(menu_name) {
-      this.menu_pos[menu_name] = (this.menu_pos[menu_name] == 'up' || this.menu_pos[menu_name] == '') ? 'down' : 'up'
+    toggleCollapseShow (menuName) {
+      this.menu_pos[menuName] = (this.menu_pos[menuName] === 'up' || this.menu_pos[menuName] === '') ? 'down' : 'up'
     }
-  },
-  created() {
   }
 }
 </script>
