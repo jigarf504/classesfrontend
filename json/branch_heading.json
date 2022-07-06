@@ -1,6 +1,10 @@
 {
    "headings": [
         {
+          "label": "#",
+          "isCheckebox": true
+        },
+        {
           "label": "Branch code"
         },
         {

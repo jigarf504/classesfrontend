@@ -1,7 +1,7 @@
 <template>
   <!-- component -->
   <div class="h-screen w-full">
-    <div class=" h-full bg-white flex flex-col shadow-xl">
+    <div class=" h-full bg-white flex flex-col">
       <TheHeader />
       <div class="h-full flex">
         <TheSidebar />

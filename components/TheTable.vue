@@ -36,7 +36,12 @@
                   <thead>
                     <tr class="bg-indigo-700 text-white uppercase text-sm leading-normal">
                       <th v-for="(th,key) of headings" :key="key" class="py-3 px-6 text-left" :class="[th.align === 'center' ? 'text-center' : 'text-left']">
-                        {{ th.label }}
+                        <template v-if="th.isCheckebox">
+                          <input type="checkbox" v-model="checkAll" @click="$emit('checkall-handler',!checkAll)">
+                        </template>
+                        <template v-else>
+                          {{ th.label }}
+                        </template>
                       </th>
                     </tr>
                   </thead>
@@ -95,7 +100,8 @@ export default {
   },
   data: () => ({
     pages: [5, 10, 15, 20, 25, 50, 100],
-    selectPagePage: 10
+    selectPagePage: 10,
+    checkAll: false
   }),
   computed: {
     perPage() {
