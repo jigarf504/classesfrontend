@@ -12,3 +12,29 @@
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
+.modal-action {
+    display: flex;
+    margin-top: 1.5rem;
+    justify-content: flex-end;
+}
+
+.btn-circle {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 9999px;
+}
+.model-lg{
+  max-width: 800px !important;
+}
+.model-xl{
+   max-width: 1140px !important;
+}
+.model-md{
+   max-width: 300px !important;
+}
+.model-xs{
+   max-width: 100px !important;
+}
+.model-2md{
+   max-width: 500px !important;
+}

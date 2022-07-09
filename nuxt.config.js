@@ -26,8 +26,21 @@ export default {
   ],
   modules: [
     '@nuxtjs/axios',
-    'nuxt-material-design-icons'
+    'nuxt-material-design-icons',
+    '@nuxtjs/toast',
   ],
+  toast: {
+      position: 'top-bottom',
+      register: [ // Register custom toasts
+        {
+          name: 'my-error',
+          message: 'Oops...Something went wrong',
+          options: {
+            type: 'error'
+          }
+        }
+      ]
+  },
   axios: {
     baseURL: process.env.BASE_URL
   },

@@ -1,5 +1,6 @@
 <template>
   <div class="w-full h-full flex flex-col">
+    <LoadingBar :loading="loading" />
     <TheTitleBar>
       <template slot="heading">
         Branch
@@ -8,10 +9,7 @@
         domain
       </template>
       <template slot="buttons">
-        <!--        <button-->
-        <!--          class="px-2 pt-2 btn bg-indigo-600 text-white rounded-md text-white text-sm text-semibold leading-relaxed">-->
-        <!--          <span class="material-icons md-16">add</span><span class="iconAlign">Create</span>-->
-        <!--        </button>-->
+        <TheBreadcrumb :breadcrumbs="breadcrumbs" />
       </template>
     </TheTitleBar>
 
@@ -27,20 +25,41 @@
         Branch
       </template>
       <template slot="heading_buttons">
-
-        <button type="button" class="flex items-center rounded-lg bg-indigo-500 px-4 py-2 text-white" @click="isOpenModel = true">
-         <span class="material-icons md-20">refresh</span>
-          <span class="font-medium subpixel-antialiased">Processing...</span>
-        </button>
-        <button
-          class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded"
-          @click="$fetch"
-        >
-          <p class="text-sm font-medium leading-none text-white">
-            <span class="material-icons md-12">refresh</span>
-          </p>
-        </button>
-
+<!--        <button type="button" class="flex items-center rounded-lg bg-indigo-700 px-4 py-2 text-white"-->
+<!--                @click="isOpenModel = true">-->
+<!--          <span class="material-icons md-20">refresh</span>-->
+<!--          <span class="font-medium subpixel-antialiased">Processing...</span>-->
+<!--        </button>-->
+        <div v-if="selectedBranchId.length > 0" class="dropdown relative">
+          <button
+            class="flex items-center rounded-lg bg-indigo-700 px-4 py-2 text-white"
+            type="button"
+            @click="isExpand = !isExpand"
+          >
+            <span class="font-medium subpixel-antialiased">Actions</span>
+            <span class="material-icons md-16">expand_more</span>
+          </button>
+          <ul
+            class="min-w-max w-44 absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none"
+            v-show="isExpand"
+          >
+            <li v-for="(action,key) of actions" :key="key" :id="key">
+              <button
+                class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
+                @click="isExpand = false"
+              >{{ action }}
+              </button>
+            </li>
+          </ul>
+        </div>
+        <!--        <button-->
+        <!--          class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded"-->
+        <!--          @click="$fetch"-->
+        <!--        >-->
+        <!--          <p class="text-sm font-medium leading-none text-white">-->
+        <!--            <span class="material-icons md-12">refresh</span>-->
+        <!--          </p>-->
+        <!--        </button>-->
         <NuxtLink
           to="branch/create"
           class="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start items-center p-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded-lg"
@@ -63,7 +82,7 @@
         <tr v-for="(branch,key) in branches" v-else :key="key" class="border-b border-gray-200 hover:bg-gray-100">
           <td class="py-3 px-6 text-left whitespace-nowrap">
             <div class="flex font-normal">
-              <input type="checkbox" v-model="selectedBranchId" :value="branch.id" />
+              <input type="checkbox" v-model="selectedBranchId" :value="branch.id"/>
             </div>
           </td>
           <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -91,8 +110,8 @@
               <span
                 class="py-1 px-3 rounded-full text-xs"
                 :class="[
-                  branch.status=='Active' ? 'text-green-600' : 'bg-purple-200',
-                  branch.status=='Active' ?'bg-green-200' : 'bg-purple-600'
+                  branch.status=='Active' ? 'text-green-600' : 'text-gray-600',
+                  branch.status=='Active' ?'bg-green-200' : 'bg-gray-300'
                 ]"
               >
                 {{ branch.status }}
@@ -102,74 +121,109 @@
           <td class="py-3 px-4 text-center">
             <div class="flex item-center justify-center">
               <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                <button class="material-icons md-18">visibility</button>
+                <button class="material-icons md-18" @click="isViewModel = true; branch_id=branch.id">visibility</button>
               </div>
               <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                 <button class="material-icons md-18">edit_square</button>
               </div>
               <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                <button class="material-icons md-18">delete</button>
+                <button class="material-icons md-18" @click="isOpenModel = true;branch_id=branch.id">delete</button>
               </div>
             </div>
           </td>
         </tr>
       </template>
     </TheTable>
-    <LazyTheModel :is-model="isOpenModel">
-        <template slot="modelBody">
-          <TheDeleteConfirmationForm @close-model="isOpenModel = false"/>
-        </template>
+    <LazyTheModel v-if="isOpenModel" :is-model="isOpenModel" :cls="'model-2md'">
+      <template slot="modelBody">
+        <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
+            <TheDeleteConfirmationForm @close-model="deleteHandler" :branch-id="branch_id"/>
+        </div>
+      </template>
     </LazyTheModel>
+    <TheView v-if="isViewModel" :is-view-model="isViewModel" :branch-id="branch_id" @close-view-model="isViewModel = false;branch_id = null" />
   </div>
-
 </template>
 <script>
-import TheTable from '@/components/TheTable'
 import headings from '@/json/branch_heading'
-
 export default {
   name: 'BranchListing',
   components: {
-    TheTable,
+    TheView : () => import('./view'),
+    TheBreadcrumb : () => import("@/components/TheBreadcrumb"),
+    LoadingBar: () => import("@/components/LoadingBar"),
+    TheTable: () => import('@/components/TheTable'),
   },
   data: () => ({
+    branch_id: null,
+    isExpand: false,
     isOpenModel: false,
+    isViewModel: false,
     headings: headings.headings,
     branches: [],
     links: [],
     total: 0,
     current_page: 1,
-    selectedBranchId: []
+    selectedBranchId: [],
+    actions: {
+      'active': 'Active',
+      'inactive': 'Inactive',
+      'delete': 'Delete',
+    },
+    breadcrumbs: [
+      {
+        label: 'Branch'
+      },
+    ],
+    loading: true
   }),
-  async fetch () {
+  async fetch() {
     try {
       const query = {};
       if (this.$route.query.page) {
         query['page'] = this.$route.query.page
       }
-      if (this.$route.query.page) {
+      if (this.$route.query.per_page) {
         query['per_page'] = this.$route.query.per_page
       }
-
-      const { data } = await this.$axios.get('branch', { params: query })
+      const {data} = await this.$axios.get('branch', {params: query})
       this.branches = data.data.data
       this.links = data.data.links
       this.total = data.data.total
       this.current_page = data.data.current_page
+      this.loading = false
     } catch (e) {
       console.log(e)
     }
   },
   watch: {
-    '$route.query' (query) {
+    '$route.query'(query) {
       this.$fetch()
     }
   },
-  mounted () {
+  mounted() {
   },
   methods: {
-    paginationHandler (link) {
-      console.log("click",link)
+    async deleteHandler(isConfirm){
+      console.log(this.branch_id,isConfirm)
+      if (isConfirm && this.branch_id) {
+        this.loading = true
+        const {data} = await this.$axios.delete(`branch/${this.branch_id}`)
+        console.log(data.message)
+        this.$fetch();
+        this.loading = false
+        this.isOpenModel = false;
+        this.branch_id = null
+      }
+      if (isConfirm === false) {
+        this.isOpenModel = false;
+        this.branch_id = null
+      }
+
+      console.log(isConfirm)
+    },
+    paginationHandler(link) {
+      console.log("click", link)
     },
     checkAllHandler(isSelected) {
       if (isSelected) {
@@ -177,7 +231,7 @@ export default {
           this.selectedBranchId.push(branch.id)
         })
       } else {
-          this.selectedBranchId = []
+        this.selectedBranchId = []
       }
     }
   }

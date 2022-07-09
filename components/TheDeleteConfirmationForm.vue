@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-4">
     <div class="text-center p-5 flex-auto justify-center">
       <span class="material-icons md-48 font-bold w-12 h-12 flex items-center text-red-500 mx-auto">delete_outline</span>
       <h2 class="text-xl font-bold py-4 ">Are you sure?</h2>
@@ -14,7 +14,7 @@
       </button>
       <button
         class="mb-2 md:mb-0 bg-red-500 border border-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-600"
-        @click="$emit('close-model',false)">Delete
+        @click="$emit('close-model',true)">Delete
       </button>
     </div>
   </div>

@@ -126,8 +126,6 @@ export default {
       if (label.indexOf('Next') !== -1) {
         label = this.currentPage + 1
       }
-      // url = url.substring(url.indexOf('page='))
-      // let page = url.substring(url.indexOf('=') + 1)
       let query = { ...this.$route.query }
       query['page'] = label
       this.$router.push({ query: query })
