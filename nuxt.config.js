@@ -30,16 +30,21 @@ export default {
     '@nuxtjs/toast',
   ],
   toast: {
-      position: 'top-bottom',
-      register: [ // Register custom toasts
-        {
-          name: 'my-error',
-          message: 'Oops...Something went wrong',
-          options: {
-            type: 'error'
-          }
+    theme: "toasted-primary",
+    position: "bottom-center",
+    duration: 3000,
+    containerClass: 'toast',
+    iconPack: 'mdi',
+    singleton: true,
+    icon: 'information',
+    action: [
+      {
+        text: 'X',
+        onClick: (e, toastObject) => {
+          toastObject.goAway(0);
         }
-      ]
+      }
+    ]
   },
   axios: {
     baseURL: process.env.BASE_URL

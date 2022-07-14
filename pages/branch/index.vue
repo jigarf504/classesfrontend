@@ -40,13 +40,13 @@
             <span class="material-icons md-16">expand_more</span>
           </button>
           <ul
-            class="min-w-max w-44 absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none"
             v-show="isExpand"
+            class="min-w-max w-44 absolute bg-white text-base z-50 float-left py-2 list-none text-left rounded-lg shadow-lg mt-1  m-0 bg-clip-padding border-none"
           >
-            <li v-for="(action,key) of actions" :key="key" :id="key">
+            <li v-for="(action,key) of actions" :id="key" :key="key">
               <button
                 class="dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                @click="isExpand = false"
+                @click="bulkActionHandler(key)"
               >{{ action }}
               </button>
             </li>
@@ -82,7 +82,7 @@
         <tr v-for="(branch,key) in branches" v-else :key="key" class="border-b border-gray-200 hover:bg-gray-100">
           <td class="py-3 px-6 text-left whitespace-nowrap">
             <div class="flex font-normal">
-              <input type="checkbox" v-model="selectedBranchId" :value="branch.id"/>
+              <input v-model="selectedBranchId" type="checkbox" :value="branch.id">
             </div>
           </td>
           <td class="py-3 px-6 text-left whitespace-nowrap">
@@ -121,10 +121,14 @@
           <td class="py-3 px-4 text-center">
             <div class="flex item-center justify-center">
               <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                <button class="material-icons md-18" @click="isViewModel = true; branch_id=branch.id">visibility</button>
+                <button class="material-icons md-18" @click="isViewModel = true; branch_id=branch.id">
+                  visibility
+                </button>
               </div>
               <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                <button class="material-icons md-18">edit_square</button>
+                <button class="material-icons md-18" @click="$router.push(`/branch/${branch.id}/edit`)">
+                  edit_square
+                </button>
               </div>
               <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                 <button class="material-icons md-18" @click="isOpenModel = true;branch_id=branch.id">delete</button>
@@ -137,7 +141,7 @@
     <LazyTheModel v-if="isOpenModel" :is-model="isOpenModel" :cls="'model-2md'">
       <template slot="modelBody">
         <div class="bg-white rounded-lg shadow relative dark:bg-gray-700">
-            <TheDeleteConfirmationForm @close-model="deleteHandler" :branch-id="branch_id"/>
+          <TheDeleteConfirmationForm :branch-id="branch_id" @close-model="deleteHandler" />
         </div>
       </template>
     </LazyTheModel>
@@ -149,10 +153,10 @@ import headings from '@/json/branch_heading'
 export default {
   name: 'BranchListing',
   components: {
-    TheView : () => import('./view'),
-    TheBreadcrumb : () => import("@/components/TheBreadcrumb"),
-    LoadingBar: () => import("@/components/LoadingBar"),
-    TheTable: () => import('@/components/TheTable'),
+    TheView: () => import('./view'),
+    TheBreadcrumb: () => import('@/components/TheBreadcrumb'),
+    LoadingBar: () => import('@/components/LoadingBar'),
+    TheTable: () => import('@/components/TheTable')
   },
   data: () => ({
     branch_id: null,
@@ -166,27 +170,27 @@ export default {
     current_page: 1,
     selectedBranchId: [],
     actions: {
-      'active': 'Active',
-      'inactive': 'Inactive',
-      'delete': 'Delete',
+      active: 'Active',
+      inactive: 'Inactive',
+      delete: 'Delete'
     },
     breadcrumbs: [
       {
         label: 'Branch'
-      },
+      }
     ],
     loading: true
   }),
-  async fetch() {
+  async fetch () {
     try {
-      const query = {};
+      const query = {}
       if (this.$route.query.page) {
-        query['page'] = this.$route.query.page
+        query.page = this.$route.query.page
       }
       if (this.$route.query.per_page) {
-        query['per_page'] = this.$route.query.per_page
+        query.per_page = this.$route.query.per_page
       }
-      const {data} = await this.$axios.get('branch', {params: query})
+      const { data } = await this.$axios.get('branch', { params: query })
       this.branches = data.data.data
       this.links = data.data.links
       this.total = data.data.total
@@ -197,41 +201,54 @@ export default {
     }
   },
   watch: {
-    '$route.query'(query) {
+    '$route.query' (query) {
       this.$fetch()
     }
   },
-  mounted() {
+  mounted () {
   },
   methods: {
-    async deleteHandler(isConfirm){
-      console.log(this.branch_id,isConfirm)
+    async deleteHandler (isConfirm) {
       if (isConfirm && this.branch_id) {
         this.loading = true
-        const {data} = await this.$axios.delete(`branch/${this.branch_id}`)
-        console.log(data.message)
-        this.$fetch();
+        await this.$axios.delete(`branch/${this.branch_id}`)
+        this.$fetch()
         this.loading = false
-        this.isOpenModel = false;
+        this.isOpenModel = false
         this.branch_id = null
       }
       if (isConfirm === false) {
-        this.isOpenModel = false;
+        this.isOpenModel = false
         this.branch_id = null
       }
-
-      console.log(isConfirm)
     },
-    paginationHandler(link) {
-      console.log("click", link)
-    },
-    checkAllHandler(isSelected) {
+    // paginationHandler(link) {
+    //   console.log("click", link)
+    // },
+    checkAllHandler (isSelected) {
       if (isSelected) {
         this.branches.forEach((branch) => {
           this.selectedBranchId.push(branch.id)
         })
       } else {
         this.selectedBranchId = []
+      }
+    },
+    async bulkActionHandler (actionName) {
+      const dataStr = {
+        action: actionName,
+        ids: this.selectedBranchId
+      }
+      this.loading = true
+      const { data, status } = await this.$axios.post('branch/bulk-actions', dataStr)
+      this.loading = false
+      this.isExpand = false
+      if (status === 200) {
+        this.$toast.success(data.message)
+        this.selectedBranchId = []
+        this.$fetch()
+      } else {
+        this.$toast.error(data.message)
       }
     }
   }
