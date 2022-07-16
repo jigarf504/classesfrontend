@@ -14,29 +14,44 @@
             Create Branch
           </h4>
         </div>
-        <theForm :branch="branch" />
-        <div class="flex items-center justify-between p-6">
-          <div class="basis-full flex items-center">
-            <button disabled type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 inline-flex items-center">
-              <Loader-SVG /> Loading...
-            </button>
-            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2">
-              Back
-            </button>
-          </div>
-        </div>
+        <ValidationObserver v-slot="{ invalid, validate }">
+          <form @submit.prevent="validate().then(onSubmit)">
+            <theForm :branch="branch" />
+            <div class="flex items-center justify-between p-6">
+              <div class="basis-full flex items-center">
+                <button :disabled="invalid" type="submit" :class="[invalid ? btnDisableClass : btnClass]">
+                  <template v-if="loading">
+                    <Loader-SVG /> Loading...
+                  </template>
+                  <template v-else>
+                    <span class="material-icons md-18 text-white mr-1">add</span>
+                    <p class="text-sm font-medium leading-none text-white subpixel-antialiased">Create</p>
+                  </template>
+                </button>
+                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2" @click="$router.push('/branch')">
+                  Back
+                </button>
+              </div>
+            </div>
+          </form>
+        </ValidationObserver>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { ValidationObserver } from 'vee-validate'
 import theForm from './form.vue'
+import common from '@/mixins/common'
 export default {
   name: 'Create',
   components: {
-    theForm
+    theForm,
+    ValidationObserver
   },
+  mixins: [common],
   data: () => ({
+    loading: false,
     breadcrumbs: [
       {
         label: 'Branch',
@@ -63,7 +78,22 @@ export default {
       phone: '',
       state: ''
     }
-  })
+  }),
+  methods: {
+    async onSubmit () {
+      try {
+        const { data, status } = await this.$axios.post('branch', this.branch)
+        if (status === 200) {
+          this.$toast.success(data.message)
+          this.$router.push('/branch')
+        } else {
+          this.$toast.error(data.message)
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
 }
 </script>
 

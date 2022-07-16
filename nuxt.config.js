@@ -17,7 +17,9 @@ export default {
   css: [
     '@/assets/css/tailwind.css'
   ],
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/vee-validate.js' }
+  ],
   components: true,
   buildModules: [
     '@nuxtjs/tailwindcss',
@@ -27,11 +29,11 @@ export default {
   modules: [
     '@nuxtjs/axios',
     'nuxt-material-design-icons',
-    '@nuxtjs/toast',
+    '@nuxtjs/toast'
   ],
   toast: {
-    theme: "toasted-primary",
-    position: "bottom-center",
+    theme: 'toasted-primary',
+    position: 'bottom-center',
     duration: 3000,
     containerClass: 'toast',
     iconPack: 'mdi',
@@ -41,7 +43,7 @@ export default {
       {
         text: 'X',
         onClick: (e, toastObject) => {
-          toastObject.goAway(0);
+          toastObject.goAway(0)
         }
       }
     ]

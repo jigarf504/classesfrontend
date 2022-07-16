@@ -18,7 +18,6 @@
       :current-page="current_page"
       :total="total"
       :links="links"
-      @pagination-handler="paginationHandler"
       @checkall-handler="checkAllHandler"
     >
       <template slot="heading_title">
