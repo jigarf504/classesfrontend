@@ -1,0 +1,27 @@
+{
+    "headings": [
+         {
+           "label": "#",
+           "isCheckebox": true
+         },
+         {
+           "label": "Course code"
+         },
+         {
+           "label": "Name"
+         },
+         {
+           "label": "Full payment"
+         },
+         {
+           "label": "Installment payment"
+         },
+         {
+           "label": "Status"
+         },
+         {
+           "label": "Action",
+           "align": "center"
+         }
+       ]
+ }

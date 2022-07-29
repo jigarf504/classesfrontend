@@ -50,6 +50,9 @@ export default {
     ValidationObserver
   },
   mixins: [common],
+  transition () {
+    return 'slide-left'
+  },
   data: () => ({
     loading: false,
     breadcrumbs: [

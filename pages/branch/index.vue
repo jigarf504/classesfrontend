@@ -157,6 +157,9 @@ export default {
     LoadingBar: () => import('@/components/LoadingBar'),
     TheTable: () => import('@/components/TheTable')
   },
+  transition () {
+    return 'slide-right'
+  },
   data: () => ({
     branch_id: null,
     isExpand: false,
