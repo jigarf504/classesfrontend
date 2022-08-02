@@ -1,6 +1,4 @@
 export default {
-  ssr: false,
-  target: "static",
   head: {
     title: "Test-Classes",
     htmlAttrs: {
