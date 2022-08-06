@@ -5,10 +5,14 @@
           "isCheckebox": true
         },
         {
-          "label": "Branch code"
+          "label": "Branch code",
+          "sort" : true,
+          "field_name": "branch_code"
         },
         {
-          "label": "Branch name"
+          "label": "Branch name",
+          "sort" : true,
+          "field_name": "name"
         },
         {
           "label": "Email"
@@ -17,7 +21,9 @@
           "label": "Phone number"
         },
         {
-          "label": "Status"
+          "label": "Status",
+          "sort" : true,
+          "field_name": "is_active"
         },
         {
           "label": "Action",

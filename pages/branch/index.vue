@@ -185,13 +185,7 @@ export default {
   }),
   async fetch () {
     try {
-      const query = {}
-      if (this.$route.query.page) {
-        query.page = this.$route.query.page
-      }
-      if (this.$route.query.per_page) {
-        query.per_page = this.$route.query.per_page
-      }
+      const query = this.$route.query || {}
       const { data } = await this.$axios.get('branch', { params: query })
       this.branches = data.data.data
       this.links = data.data.links

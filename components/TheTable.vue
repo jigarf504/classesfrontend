@@ -40,7 +40,13 @@
                           <input type="checkbox" v-model="checkAll" @click="$emit('checkall-handler',!checkAll)">
                         </template>
                         <template v-else>
-                          {{ th.label }}
+                          <div v-if="th.sort" class="flex" @click="sortHandler(th.field_name)">
+                            <span class="mr-10">{{ th.label }}</span>
+                            <Sort :label="th.field_name" />
+                          </div>
+                          <div v-else>
+                             {{ th.label }}
+                          </div>
                         </template>
                       </th>
                     </tr>
@@ -80,6 +86,9 @@
 <script>
 export default {
   name: 'TheTable',
+  components: {
+    Sort: () => import('@/components/Sort'),
+  },
   props: {
     headings: {
       type: Array,
@@ -134,6 +143,20 @@ export default {
       let query = { ...this.$route.query }
       query['per_page'] = this.selectPagePage
       this.$router.push({ query: query })
+    },
+    sortHandler(label) {
+      let query = {...this.$route.query}
+      const sortField = query?.sort_field || ''
+      let sortType = this.$route.query?.sort_type || ''
+
+      if (sortField === label) {
+        sortType = sortType === 'ASC' ? 'DESC': 'ASC'
+        query['sort_type'] = sortType
+      } else {
+        query['sort_field'] = label
+        query['sort_type'] = 'ASC'
+      }
+      this.$router.push({query})
     }
   },
   mounted() {
