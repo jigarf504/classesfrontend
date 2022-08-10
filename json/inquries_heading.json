@@ -1,0 +1,31 @@
+{
+  "headings": [
+    {
+      "label": "#",
+      "isCheckebox": true
+    },
+    {
+      "label": "Branch name",
+      "sort": true,
+      "field_name": "branch_id"
+    },
+    {
+      "label": "Student name",
+      "sort": true,
+      "field_name": "student_name"
+    },
+    {
+      "label": "Email"
+    },
+    {
+      "label": "Mobile number"
+    },
+    {
+      "label": "Is register?"
+    },
+    {
+      "label": "Action",
+      "align": "center"
+    }
+  ]
+}

@@ -137,14 +137,14 @@ export default {
         return false
       }
       let label = link.label
-      if (label.includes('Previous') !== -1) {
+      if (label.indexOf('Previous') !== -1) {
         label = this.currentPage - 1
       }
-      if (label.includes('Next') !== -1) {
+      if (label.indexOf('Next') !== -1) {
         label = this.currentPage + 1
       }
       const query = { ...this.$route.query }
-      query.page = label
+      query.page = +label
       this.$router.push({ query })
     },
     perPageHandler () {

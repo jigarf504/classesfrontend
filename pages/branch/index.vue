@@ -203,7 +203,7 @@ export default {
     }
   },
   watch: {
-    '$route.query' (query) {
+    '$route.query' () {
       this.$fetch()
     }
   },
