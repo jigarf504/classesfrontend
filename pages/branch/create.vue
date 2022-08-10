@@ -93,7 +93,7 @@ export default {
           this.$toast.error(data.message)
         }
       } catch (e) {
-        console.log(e)
+        this.$toast.error(e.response.data.message)
       }
     }
   }

@@ -37,7 +37,8 @@
                     <tr class="bg-indigo-700 text-white uppercase text-sm leading-normal">
                       <th v-for="(th,key) of headings" :key="key" class="py-3 px-6 text-left" :class="[th.align === 'center' ? 'text-center' : 'text-left']">
                         <template v-if="th.isCheckebox">
-                          <input type="checkbox" v-model="checkAll" @click="$emit('checkall-handler',!checkAll)">
+                          <span v-if="total === 0">#</span>
+                          <input v-else v-model="checkAll" type="checkbox" @click="$emit('checkall-handler',!checkAll)">
                         </template>
                         <template v-else>
                           <div v-if="th.sort" class="flex" @click="sortHandler(th.field_name)">
@@ -45,7 +46,7 @@
                             <Sort :label="th.field_name" />
                           </div>
                           <div v-else>
-                             {{ th.label }}
+                            {{ th.label }}
                           </div>
                         </template>
                       </th>
@@ -87,7 +88,7 @@
 export default {
   name: 'TheTable',
   components: {
-    Sort: () => import('@/components/Sort'),
+    Sort: () => import('@/components/Sort')
   },
   props: {
     headings: {
@@ -100,7 +101,8 @@ export default {
     },
     total: {
       type: Number,
-      required: true
+      required: true,
+      default: 0
     },
     links: {
       type: Array,
@@ -113,15 +115,21 @@ export default {
     checkAll: false
   }),
   computed: {
-    perPage() {
-      return this.$route.query?.per_page || 10;
+    perPage () {
+      return this.$route.query?.per_page || 10
     },
     no_of_page () {
-      return '<b>' + (this.perPage * this.currentPage) + '</b>&nbsp;of&nbsp;<b>' + this.total + '</b>&nbsp;total records'
+      if (this.total) {
+        return '<b>' + (this.perPage * this.currentPage) + '</b>&nbsp;of&nbsp;<b>' + this.total + '</b>&nbsp;total records'
+      }
+      return ''
     },
     isLinks () {
-      return this.links?.length > 0
+      return this.total > 0 && this.links?.length > 0
     }
+  },
+  mounted () {
+    this.selectPagePage = this.perPage
   },
   methods: {
     paginationHandler (link) {
@@ -129,38 +137,37 @@ export default {
         return false
       }
       let label = link.label
-      if (label.indexOf('Previous') !== -1) {
+      if (label.includes('Previous') !== -1) {
         label = this.currentPage - 1
       }
-      if (label.indexOf('Next') !== -1) {
+      if (label.includes('Next') !== -1) {
         label = this.currentPage + 1
       }
-      let query = { ...this.$route.query }
-      query['page'] = label
-      this.$router.push({ query: query })
+      const query = { ...this.$route.query }
+      query.page = label
+      this.$router.push({ query })
     },
     perPageHandler () {
-      let query = { ...this.$route.query }
-      query['per_page'] = this.selectPagePage
-      this.$router.push({ query: query })
+      const query = { ...this.$route.query }
+      query.per_page = this.selectPagePage
+      this.$router.push({ query })
     },
-    sortHandler(label) {
-      let query = {...this.$route.query}
+    sortHandler (label) {
+      if (this.total === 0) { return false }
+
+      const query = { ...this.$route.query }
       const sortField = query?.sort_field || ''
       let sortType = this.$route.query?.sort_type || ''
 
       if (sortField === label) {
-        sortType = sortType === 'ASC' ? 'DESC': 'ASC'
-        query['sort_type'] = sortType
+        sortType = sortType === 'ASC' ? 'DESC' : 'ASC'
+        query.sort_type = sortType
       } else {
-        query['sort_field'] = label
-        query['sort_type'] = 'ASC'
+        query.sort_field = label
+        query.sort_type = 'ASC'
       }
-      this.$router.push({query})
+      this.$router.push({ query })
     }
-  },
-  mounted() {
-    this.selectPagePage = this.perPage
   }
 }
 </script>

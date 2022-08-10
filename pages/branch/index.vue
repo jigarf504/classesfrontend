@@ -78,6 +78,11 @@
             Oops.. Something went wrong.
           </td>
         </tr>
+        <tr v-else-if="branches.length <= 0" class="border-b border-gray-200 hover:bg-gray-100">
+          <td class="py-3 px-6 whitespace-nowrap text-center">
+            No data available
+          </td>
+        </tr>
         <tr v-for="(branch,key) in branches" v-else :key="key" class="border-b border-gray-200 hover:bg-gray-100">
           <td class="py-3 px-6 text-left whitespace-nowrap">
             <div class="flex font-normal">
@@ -130,7 +135,7 @@
                 </button>
               </div>
               <div class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                <button class="material-icons md-18" @click="isOpenModel = true;branch_id=branch.id">delete</button>
+                <button class="material-icons md-18" @click="isOpenModel = true;branch_id=branch.id"> </button>
               </div>
             </div>
           </td>
@@ -193,7 +198,8 @@ export default {
       this.current_page = data.data.current_page
       this.loading = false
     } catch (e) {
-      console.log(e)
+      this.$toast.error(e.response.data.message)
+      this.loading = false
     }
   },
   watch: {
